@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: python-web-runner
+    env: node
+    plan: free
+    buildCommand: |
+      npm install --prefix backend
+      npm install --prefix frontend
+      npm run build --prefix frontend
+    startCommand: node backend/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: EXECUTION_TIMEOUT
+        value: 30000
+      - key: MAX_OUTPUT_SIZE
+        value: 10485760
+      - key: MAX_MEMORY
+        value: 256
+      - key: LOG_LEVEL
+        value: warn
+      - key: SANDBOX_ENABLED
+        value: true
+    routes:
+      - path: /api
+        matchType: prefix
+      - path: /
+        matchType: prefix

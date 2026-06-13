@@ -1,0 +1,8 @@
+[build]
+builder = "nixpacks"
+command = "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend"
+
+[deploy]
+startCommand = "node backend/server.js"
+health_check_path = "/health"
+health_check_timeout = 100

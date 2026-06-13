@@ -35,7 +35,11 @@ npm-debug.log*
 tmp/
 temp/
 .cache/
+uploads/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Frontend build
+frontend/dist/

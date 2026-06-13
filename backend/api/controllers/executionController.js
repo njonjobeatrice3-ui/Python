@@ -4,12 +4,27 @@ const logger = require('../../utils/logger');
 
 const executions = new Map();
 
+// Clean up old executions every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, execution] of executions.entries()) {
+    if (now - new Date(execution.endTime).getTime() > 5 * 60 * 1000) {
+      executions.delete(id);
+      logger.info(`Cleaned up execution: ${id}`);
+    }
+  }
+}, 5 * 60 * 1000);
+
 exports.executeCode = async (req, res) => {
   try {
     const { code, language = 'python' } = req.body;
     
     if (!code) {
       return res.status(400).json({ error: 'Code is required' });
+    }
+
+    if (code.length > 100000) {
+      return res.status(400).json({ error: 'Code is too large (max 100KB)' });
     }
 
     const executionId = uuidv4();
